@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Fidum\ChartTile\Charts\Chart;
 use Fidum\ChartTile\Contracts\ChartFactory;
 
-class TagsChart implements ChartFactory
+class GameDrillChart implements ChartFactory
 {
     public static function make(array $settings): ChartFactory
     {
@@ -21,8 +21,8 @@ class TagsChart implements ChartFactory
         $chart = new Chart();
 
         $tags = Tag::select('id', 'name')
-            ->where("name", "!=", "Game")
-            ->where("name", "!=", "Drill")
+            ->where("name", "Game")
+            ->orWhere("name", "Drill")
             ->get();
 
         $data = [];
@@ -58,6 +58,8 @@ class TagsChart implements ChartFactory
             );
         }
 
+
+
         $chart->labels($tags->pluck('name'))
             ->options([
                 'responsive' => true,
@@ -70,7 +72,7 @@ class TagsChart implements ChartFactory
                 ],
                 'legend' => [
                     'display' => true,
-                    'position' => 'right'
+                    'position' => 'right',
                 ],
                 'scales' => [
                     'xAxes' => ['display' => false],

@@ -6,36 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property integer $id
- * @property integer $tag_id
  * @property integer $user_id
- * @property string $name
+ * @property integer $team_id
  * @property string $created_at
  * @property string $updated_at
- * @property SessionDrill[] $sessionDrills
- * @property Tag $tag
+ * @property Team $team
  * @property User $user
  */
-class Session extends Model
+class TeamsUsers extends Model
 {
     /**
      * @var array
      */
-    protected $fillable = ['tag_id', 'user_id', 'name', 'created_at', 'updated_at'];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function sessionDrills()
-    {
-        return $this->hasMany('App\Models\SessionDrill');
-    }
+    protected $fillable = ['user_id', 'team_id', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tag()
+    public function team()
     {
-        return $this->belongsTo('App\Models\Tag');
+        return $this->belongsTo('App\Models\Team');
     }
 
     /**

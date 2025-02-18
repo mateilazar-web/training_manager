@@ -14,15 +14,16 @@ class Generator
         $this->session = $session;
     }
 
-    public function run(){
+    public function run()
+    {
         $drills = Drill::select("drills.id", "drills.name")
-            ->join("drill_tags","drills.id","=","drill_tags.drill_id")
-            ->join("tags","drill_tags.tag_id","=","tags.id")
-            ->where("tags.id","=",$this->session->tag_id)
+            ->join("drill_tags", "drills.id", "=", "drill_tags.drill_id")
+            ->join("tags", "drill_tags.tag_id", "=", "tags.id")
+            ->where("tags.id", "=", $this->session->tag_id)
             ->inRandomOrder()
             ->take(3)
             ->get();
-        foreach ($drills as $drill){
+        foreach ($drills as $drill) {
             $sessionDrill = new SessionDrill();
             $sessionDrill->session_id = $this->session->id;
             $sessionDrill->drill_id = $drill->id;
@@ -30,19 +31,21 @@ class Generator
         }
     }
 
-    public function duplicate(){
+    public function duplicate()
+    {
         $drills = Session::select("drills.id", "drills.name")
-            ->join("session_drills","session_drills.session_id","=","sessions.id")
-            ->join("drills","session_drills.drill_id","=","drills.id")
-            ->where("sessions.id","=",$this->session->id)
+            ->join("session_drills", "session_drills.session_id", "=", "sessions.id")
+            ->join("drills", "session_drills.drill_id", "=", "drills.id")
+            ->where("sessions.id", "=", $this->session->id)
             ->get();
 
-        $duplicateSession = new Session();        
-        $duplicateSession->name = $this->session->name." (1)";
+        $duplicateSession = new Session();
+        $duplicateSession->name = $this->session->name . " (1)";
         $duplicateSession->tag_id = $this->session->tag_id;
+        $duplicateSession->user_id = $this->session->user_id;
         $duplicateSession->save();
-        
-        foreach ($drills as $drill){
+
+        foreach ($drills as $drill) {
             $sessionDrill = new SessionDrill();
             $sessionDrill->session_id = $duplicateSession->id;
             $sessionDrill->drill_id = $drill->id;

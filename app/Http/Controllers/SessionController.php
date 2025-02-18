@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserTeamRole;
+use App\Models\Tag;
 use App\Models\Session;
 use App\Models\SessionDrill;
-use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use SessionGenerator\Services\Generator;
 
 class SessionController extends Controller
@@ -19,17 +22,28 @@ class SessionController extends Controller
      */
     public function index()
     {
-        $sessions = Session::select('id','name','tag_id')
-            ->orderBy('created_at','desc')
+        $sessions = Session::select('sessions.id', 'sessions.name', 'tag_id', 'users.name as user_name')
+            ->join('users', 'users.id', '=', 'sessions.user_id')
+            ->where('user_id', Auth::user()->id)
+            ->orderBy('sessions.created_at', 'desc')
             ->paginate(10);
+
+
+        $teamUsers = User::select('users.id', 'users.name')
+            ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
+            ->where('team_id', Auth::user()->userTeamRoles[0]->team_id)
+            ->where('user_team_roles.role', '!=', UserTeamRole::Pending->value)
+            ->get();
+
+        $userIds[] = Auth::user()->id;
 
         $search = $this->searchParameter;
 
         $currentSessionId = Session::select('id')
-            ->orderBy('created_at','desc')
+            ->orderBy('created_at', 'desc')
             ->first();
 
-        return view('sessions.index',compact('sessions','search','currentSessionId'))
+        return view('sessions.index', compact('sessions', 'search', 'currentSessionId', 'teamUsers', 'userIds'))
             ->with(request()->input('page'));
     }
 
@@ -41,7 +55,7 @@ class SessionController extends Controller
     public function create()
     {
         $tags = Tag::all();
-        return view("sessions.create",compact('tags'));
+        return view("sessions.create", compact('tags'));
     }
 
     /**
@@ -57,13 +71,15 @@ class SessionController extends Controller
             'tag' => 'required',
         ]);
 
-        $session = new Session();        
+        $session = new Session();
         $session->name = $request['name'];
         $session->tag_id = $request['tag'];
+        $session->user_id = Auth::user()->id;
+
         $session->save();
 
-        return redirect()->route('sessions.show',$session->id)
-                        ->with('success','Session created successfully.');
+        return redirect()->route('sessions.show', $session->id)
+            ->with('success', 'Session created successfully.');
     }
 
     /**
@@ -74,11 +90,11 @@ class SessionController extends Controller
      */
     public function show(Session $session)
     {
-        $drills = SessionDrill::select('drills.id','drills.name','drills.description','drills.link','session_drills.id as session_drill_id')
-            ->join("drills","drills.id","=","session_drills.drill_id")
-            ->where("session_id","=",$session->id)
+        $drills = SessionDrill::select('drills.id', 'drills.name', 'drills.description', 'drills.link', 'session_drills.id as session_drill_id')
+            ->join("drills", "drills.id", "=", "session_drills.drill_id")
+            ->where("session_id", "=", $session->id)
             ->get();
-        return view('sessions.show',compact('session','drills'));
+        return view('sessions.show', compact('session', 'drills'));
     }
 
     /**
@@ -90,7 +106,7 @@ class SessionController extends Controller
     public function edit(Session $session)
     {
         $tags = Tag::all();
-        return view('sessions.edit',compact('session','tags'));
+        return view('sessions.edit', compact('session', 'tags'));
     }
 
     /**
@@ -106,13 +122,14 @@ class SessionController extends Controller
             'name' => 'required',
             'tag' => 'required',
         ]);
-   
+
         $session->name = $request['name'];
         $session->tag_id = $request['tag'];
+
         $session->save();
 
         return redirect()->route('sessions.index')
-                        ->with('success','Session updated successfully.');
+            ->with('success', 'Session updated successfully.');
     }
 
     /**
@@ -132,7 +149,7 @@ class SessionController extends Controller
         $generator = new Generator($session);
         $duplicateSessionId = $generator->duplicate();
 
-        return redirect()->route('sessions.show',$duplicateSessionId);        
+        return redirect()->route('sessions.show', $duplicateSessionId);
     }
 
     public function generate($id)
@@ -141,31 +158,40 @@ class SessionController extends Controller
         $generator = new Generator($session);
         $generator->run();
 
-        return redirect()->route('sessions.show',$session->id);        
+        return redirect()->route('sessions.show', $session->id);
     }
 
     public function regenerate($id)
     {
-        SessionDrill::where("session_id",$id)->delete();
+        SessionDrill::where("session_id", $id)->delete();
 
         return $this->generate($id);
     }
 
     public function search(Request $request)
     {
-        $this->searchParameter = $request->get("name");
-        $sessions = Session::select('id','name','tag_id')
-            ->where('name','like','%'.$this->searchParameter.'%')
-            ->orderBy('created_at','desc')
+        $this->searchParameter = $request->get("name") ?? "";
+
+        $sessions = Session::select('id', 'name', 'tag_id')
+            ->where('name', 'like', '%' . $this->searchParameter . '%')
+            ->whereIn('user_id', $request["teamUsers"])
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         $search = $this->searchParameter;
 
         $currentSessionId = Session::select('id')
-            ->orderBy('created_at','desc')
+            ->orderBy('created_at', 'desc')
             ->first();
 
-        return view('sessions.index',compact('sessions','search','currentSessionId'))
+        $teamUsers = User::select('users.id', 'users.name')
+            ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
+            ->where('team_id', Auth::user()->userTeamRoles[0]->team_id)
+            ->get();
+
+        $userIds = $request->get("teamUsers");
+
+        return view('sessions.index', compact('sessions', 'search', 'currentSessionId', 'teamUsers', 'userIds'))
             ->with(request()->input('page'));
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Enums\UserTeamRole;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -13,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        'App\Models\User' => 'App\Policies\UserPolicy',
     ];
 
     /**
@@ -26,7 +28,17 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('view-admin-section', function ($user) {
-            return $user->role->name === 'Super Admin';
+            return isset($user)
+                && $user->role->name === 'Admin';
+        });
+
+        Gate::define('view-user-section', function ($user) {
+            return $user !== null;
+        });
+
+        Gate::define('view-team-member-section', function ($user) {
+            return $user->userTeamRoles->count() > 0
+                && $user->userTeamRoles[0]->role !== UserTeamRole::Pending->value;
         });
     }
 }

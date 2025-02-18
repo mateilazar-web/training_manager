@@ -38,7 +38,7 @@
                     }
 
                     .h_iframe {
-                        height: 100%;
+                        height: 97%;
                     }
                 </style>
                 <div class="container-fluid">
