@@ -6,6 +6,7 @@ use App\Enums\UserTeamRole;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -39,6 +40,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('view-team-member-section', function ($user) {
             return $user->userTeamRoles->count() > 0
                 && $user->userTeamRoles[0]->role !== UserTeamRole::Pending->value;
+        });
+
+        Gate::define('view-sessions-search', function ($user) {
+            return Route::currentRouteName() == 'sessions.index';
         });
     }
 }

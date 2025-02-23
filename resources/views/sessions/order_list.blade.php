@@ -12,7 +12,7 @@
 
             $.post('{{ route('sessions.reorder',$session->id) }}', {drillIds:ids})
                 .done(function(response,statusCode){ 
-                    console.log(response);
+                    location.reload();
                 })
                 .fail(function(xhr, status, error) {
                     console.log(xhr.responseText);

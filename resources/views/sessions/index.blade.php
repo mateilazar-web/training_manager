@@ -13,6 +13,7 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
+                @can('view-sessions-search') 
                 <form class="d-flex" action="{{ url('sessions/search') }}" method="GET">
 
                     {{ csrf_field() }}
@@ -47,10 +48,12 @@
                     <input class="form-control d-inline-block me-1" type="text" name="name" value="{{ $search }}" />
                     <input type="submit" value="Search" class="btn btn-primary" />
                 </form>
+                @endcan
             </div>
 
             <div>
                 <a class="btn btn-info" href="{{ route('sessions.show',$currentSessionId) }}">Current Session</a>
+                <a class="btn btn-info" href="{{ route($buttonRoute) }}">{{$buttonText}}</a>
                 <a class="btn btn-success" href="{{ route('sessions.create') }}"> Create New Session</a>
             </div>
         </div>
@@ -71,12 +74,16 @@
 <table class="table table-bordered">
     <tr>
         <th>Name</th>
+        <th>Owner</th>
+        <th>Role</th>
         <th>Tag</th>
         <th>Action</th>
     </tr>
     @foreach ($sessions as $session)
     <tr>
         <td class="align-middle">{{ $session->name }}</td>
+        <td class="align-middle nowrap">{{ $session->user_name }}</td>
+        <td class="align-middle">{{ $session->user_team_role }}</td>
         <td class="align-middle">{{ $session->tag->name }}</td>
         <td class="nowrap">
 

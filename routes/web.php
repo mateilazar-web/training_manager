@@ -44,6 +44,7 @@ Route::resource('drills', DrillController::class)->middleware(['auth']);
 Route::resource('tags', TagController::class);
 
 Route::any('sessions/search', 'App\Http\Controllers\SessionController@search');
+Route::any('sessions/team_sessions', 'App\Http\Controllers\SessionController@teamSessions')->name('sessions.teamSessions');
 Route::put('sessions/generate/{id}', [SessionController::class, 'generate'])->name('sessions.generate');
 Route::put('sessions/regenerate/{id}', [SessionController::class, 'regenerate'])->name('sessions.regenerate');
 Route::put('sessions/duplicate/{id}', [SessionController::class, 'duplicate'])->name('sessions.duplicate');
