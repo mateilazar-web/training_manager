@@ -19,7 +19,7 @@ class SessionDrillsController extends Controller
      */
     public function index()
     {
-        //
+        abort(501);
     }
 
     /**
@@ -29,7 +29,7 @@ class SessionDrillsController extends Controller
      */
     public function create($sessionId)
     {
-        //
+        abort(501);
     }
 
     public function search($sessionId,Request $request){
@@ -94,7 +94,7 @@ class SessionDrillsController extends Controller
      */
     public function show($id)
     {
-        //
+        abort(501);
     }
 
     /**
@@ -105,7 +105,7 @@ class SessionDrillsController extends Controller
      */
     public function edit($id)
     {
-        //
+        abort(501);
     }
 
     /**
@@ -117,7 +117,7 @@ class SessionDrillsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        abort(501);
     }
 
     /**

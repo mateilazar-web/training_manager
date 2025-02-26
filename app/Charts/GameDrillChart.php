@@ -13,14 +13,14 @@ class GameDrillChart implements ChartFactory
 {
     public static function make(array $settings): ChartFactory
     {
-        return new static;
+        return new self;
     }
 
     public function chart(): Chart
     {
         $chart = new Chart();
 
-        $tags = Tag::select('id', 'name')
+        $tags = Tag::query()->select('id', 'name')
             ->where("name", "Game")
             ->orWhere("name", "Drill")
             ->get();
@@ -28,7 +28,8 @@ class GameDrillChart implements ChartFactory
         $data = [];
 
         foreach ($tags as $tag) {
-            $sessionDrills = SessionDrill::select('session_drills.id')
+            $sessionDrills = SessionDrill::query()
+                ->select('session_drills.id')
                 ->join("drills", "drills.id", "=", "session_drills.drill_id")
                 ->join("drill_tags", "drill_tags.drill_id", "=", "drills.id")
                 ->join("tags", "drill_tags.tag_id", "=", "tags.id")

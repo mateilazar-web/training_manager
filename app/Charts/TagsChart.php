@@ -13,7 +13,7 @@ class TagsChart implements ChartFactory
 {
     public static function make(array $settings): ChartFactory
     {
-        return new static;
+        return new self;
     }
 
     public function chart(): Chart

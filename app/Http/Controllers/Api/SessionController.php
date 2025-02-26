@@ -27,7 +27,8 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response('The method is not implemented', 501)
+            ->header('Content-Type', 'text/plain');
     }
 
     /**
@@ -38,7 +39,8 @@ class SessionController extends Controller
      */
     public function show(Session $session)
     {
-        //
+        return response('The method is not implemented', 501)
+            ->header('Content-Type', 'text/plain');
     }
 
     /**
@@ -50,7 +52,8 @@ class SessionController extends Controller
      */
     public function update(Request $request, Session $session)
     {
-        //
+        return response('The method is not implemented', 501)
+            ->header('Content-Type', 'text/plain');
     }
 
     /**
@@ -61,7 +64,8 @@ class SessionController extends Controller
      */
     public function destroy(Session $session)
     {
-        //
+        return response('The method is not implemented', 501)
+            ->header('Content-Type', 'text/plain');
     }
 
     public function reorder(Request $request, Session $session)

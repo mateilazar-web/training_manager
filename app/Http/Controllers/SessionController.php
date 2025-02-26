@@ -35,7 +35,7 @@ class SessionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(501);
     }
 
     public function duplicate($id)

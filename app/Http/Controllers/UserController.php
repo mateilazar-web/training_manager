@@ -50,7 +50,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        abort(501);
     }
 
     /**
@@ -61,7 +61,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort(501);
     }
 
     /**
@@ -183,6 +183,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        abort(501);
     }
 }

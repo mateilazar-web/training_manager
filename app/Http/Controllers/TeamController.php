@@ -132,7 +132,9 @@ class TeamController extends Controller
      * @param  \App\Models\Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Team $team) {}
+    public function destroy(Team $team) {
+        abort(501);
+    }
 
     public function requestAccess(Request $request)
     {

@@ -101,6 +101,6 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        abort(501);
     }
 }
