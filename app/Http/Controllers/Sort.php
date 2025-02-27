@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Drill;
 
 class Sort extends Controller
 {
     public function show()
     {
-        $deleted = Drill::where('name', 'Drill1')->delete();
+        Drill::query()->where('name', 'Drill1')->delete();
 
         $drill = new Drill(); 
         $drill->name = "Drill1";

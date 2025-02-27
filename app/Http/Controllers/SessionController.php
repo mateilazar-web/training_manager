@@ -40,7 +40,7 @@ class SessionController extends Controller
 
     public function duplicate($id)
     {
-        $session = Session::find($id);
+        $session = Session::query()->find($id);
         $generator = new Generator($session);
         $duplicateSessionId = $generator->duplicate();
 
@@ -61,7 +61,7 @@ class SessionController extends Controller
 
     public function generate($id)
     {
-        $session = Session::find($id);
+        $session = Session::query()->find($id);
         $generator = new Generator($session);
         $generator->run();
 
@@ -75,7 +75,8 @@ class SessionController extends Controller
      */
     public function index()
     {
-        $sessions = Session::select('sessions.id', 'sessions.name', 'tag_id', 'users.name as user_name', 'user_team_roles.role as user_team_role')
+        $sessions = Session::query()
+            ->select('sessions.id', 'sessions.name', 'tag_id', 'users.name as user_name', 'user_team_roles.role as user_team_role')
             ->join('users', 'users.id', '=', 'sessions.user_id')
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
             ->where('sessions.user_id', Auth::user()->id)
@@ -83,7 +84,8 @@ class SessionController extends Controller
             ->paginate(10);
 
 
-        $teamUsers = User::select('users.id', 'users.name')
+        $teamUsers = User::query()
+            ->select('users.id', 'users.name')
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
             ->where('team_id', Auth::user()->userTeamRoles[0]->team_id)
             ->where('user_team_roles.role', '!=', UserTeamRole::Pending->value)
@@ -93,7 +95,8 @@ class SessionController extends Controller
 
         $search = $this->searchParameter;
 
-        $currentSessionId = Session::select('id')
+        $currentSessionId = Session::query()
+            ->select('id')
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -109,7 +112,7 @@ class SessionController extends Controller
 
     public function regenerate($id)
     {
-        SessionDrill::where("session_id", $id)->delete();
+        SessionDrill::query()->where("session_id", $id)->delete();
 
         return $this->generate($id);
     }
@@ -118,7 +121,8 @@ class SessionController extends Controller
     {
         $this->searchParameter = $request->get("name") ?? "";
 
-        $sessions = Session::select('id', 'name', 'tag_id')
+        $sessions = Session::query()
+            ->select('id', 'name', 'tag_id')
             ->where('name', 'like', '%' . $this->searchParameter . '%')
             ->whereIn('user_id', $request["teamUsers"])
             ->orderBy('created_at', 'desc')
@@ -126,11 +130,13 @@ class SessionController extends Controller
 
         $search = $this->searchParameter;
 
-        $currentSessionId = Session::select('id')
+        $currentSessionId = Session::query()
+            ->select('id')
             ->orderBy('created_at', 'desc')
             ->first();
 
-        $teamUsers = User::select('users.id', 'users.name')
+        $teamUsers = User::query()
+            ->select('users.id', 'users.name')
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
             ->where('team_id', Auth::user()->userTeamRoles[0]->team_id)
             ->get();
@@ -155,10 +161,12 @@ class SessionController extends Controller
      */
     public function show(Session $session)
     {
-        $drills = SessionDrill::select('drills.id', 'drills.name', 'drills.description', 'drills.link', 'session_drills.id as session_drill_id')
+        $drills = SessionDrill::query()
+            ->select('drills.id', 'drills.name', 'drills.description', 'drills.link', 'session_drills.id as session_drill_id')
             ->join("drills", "drills.id", "=", "session_drills.drill_id")
             ->where("session_id", "=", $session->id)
             ->get();
+
         return view('sessions.show', compact('session', 'drills'));
     }
 
@@ -188,7 +196,8 @@ class SessionController extends Controller
 
     public function teamSessions()
     {
-        $sessions = Session::select('sessions.id', 'sessions.name', 'tag_id', 'users.name as user_name', 'user_team_roles.role as user_team_role')
+        $sessions = Session::query()
+            ->select('sessions.id', 'sessions.name', 'tag_id', 'users.name as user_name', 'user_team_roles.role as user_team_role')
             ->join('users', 'users.id', '=', 'sessions.user_id')
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
             ->where('team_id', Auth::user()->userTeamRoles[0]->team_id)
@@ -197,7 +206,8 @@ class SessionController extends Controller
             ->paginate(10);
 
 
-        $teamUsers = User::select('users.id', 'users.name')
+        $teamUsers = User::query()
+            ->select('users.id', 'users.name')
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
             ->where('team_id', Auth::user()->userTeamRoles[0]->team_id)
             ->where('user_team_roles.role', '!=', UserTeamRole::Pending->value)
@@ -207,7 +217,8 @@ class SessionController extends Controller
 
         $search = $this->searchParameter;
 
-        $currentSessionId = Session::select('id')
+        $currentSessionId = Session::query()
+            ->select('id')
             ->orderBy('created_at', 'desc')
             ->first();
 

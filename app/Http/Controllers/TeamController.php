@@ -77,7 +77,8 @@ class TeamController extends Controller
     {
         //$team = Team::find($team->user->userTeamRoles[0]->team_id);
 
-        $users = User::visibleTo(auth()->user())
+        $users = User::query()
+            ->visibleTo(auth()->user())
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
             ->where('user_team_roles.team_id', $team->id)
             ->select('users.id', 'users.name', 'user_team_roles.role')
@@ -167,7 +168,7 @@ class TeamController extends Controller
         $userTeamRole->team_id = $request["team"];
         $userTeamRole->save();
 
-        $team = Team::find($request["team"]);
+        $team = Team::query()->find($request["team"]);
 
         return redirect()->route('teams.show', $team->id)
             ->with('success', 'Access request sent successfully.');
@@ -175,7 +176,8 @@ class TeamController extends Controller
 
     public function removeUser(Team $team, User $user)
     {
-        $userTeamRole = UserTeamRole::where('user_id', $user->id)
+        $userTeamRole = UserTeamRole::query()
+            ->where('user_id', $user->id)
             ->where('team_id', $team->id)
             ->first();
         $userTeamRole->delete();

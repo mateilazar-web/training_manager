@@ -15,7 +15,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::first()->paginate(10);
+        $tags = Tag::query()->first()->paginate(10);
 
         return view('tags.index',compact('tags'))
             ->with(request()->input('page'));
@@ -43,7 +43,7 @@ class TagController extends Controller
             'name' => 'required',
         ]);
 
-        Tag::create($request->all());
+        Tag::query()->create($request->all());
 
         return redirect()->route('tags.index')
                         ->with('success','Tag created successfully.');
@@ -104,7 +104,7 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        DrillTag::where("tag_id",$tag->id)->delete();
+        DrillTag::query()->where("tag_id",$tag->id)->delete();
         $tag->delete();
 
         return redirect()->route('tags.index')

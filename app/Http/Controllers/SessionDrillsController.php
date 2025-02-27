@@ -40,7 +40,7 @@ class SessionDrillsController extends Controller
     }
 
     private function getSearchContent($sessionId,Request $request){
-        $tagId = Session::where("id",$sessionId)->first()->tag_id;
+        $tagId = Session::query()->where("id",$sessionId)->first()->tag_id;
         $tags = Tag::all();
         $tagIds = $request->get("tags");
         if (empty($tagIds)){
@@ -78,7 +78,8 @@ class SessionDrillsController extends Controller
 
         $session = $sessionDrill->session;
 
-        $drills = SessionDrill::select('drills.id','drills.name','drills.description','session_drills.id as session_drill_id')
+        $drills = SessionDrill::query()
+            ->select('drills.id','drills.name','drills.description','session_drills.id as session_drill_id')
             ->join("drills","drills.id","=","session_drills.drill_id")
             ->where("session_id","=",$sessionDrill->session_id)
             ->get();
@@ -128,12 +129,12 @@ class SessionDrillsController extends Controller
      */
     public function destroy($id)
     {
-        $sessionDrill = SessionDrill::where("id",$id)->first();
+        $sessionDrill = SessionDrill::query()->where("id",$id)->first();
         $sessionId = $sessionDrill->session_id;
         $session = $sessionDrill->session;
         $sessionDrill->delete();
         
-        $drills = SessionDrill::select('drills.id','drills.name','drills.description','session_drills.id as session_drill_id')
+        $drills = SessionDrill::query()->select('drills.id','drills.name','drills.description','session_drills.id as session_drill_id')
             ->join("drills","drills.id","=","session_drills.drill_id")
             ->where("session_id","=",$sessionId)
             ->get();
@@ -143,8 +144,8 @@ class SessionDrillsController extends Controller
     }
 
     public function replaceList(int $sessionDrillId,Request $request){
-        $sessionDrill = SessionDrill::where("id",$sessionDrillId)->first(); 
-        $drill = Drill::where("id",$sessionDrill->drill_id)->first(); 
+        $sessionDrill = SessionDrill::query()->where("id",$sessionDrillId)->first(); 
+        $drill = Drill::query()->where("id",$sessionDrill->drill_id)->first(); 
 
         [$drills,$search,$sessionId,$tags,$tagIds] = $this->getSearchContent($sessionDrill->session_id,$request);      
 
@@ -154,7 +155,7 @@ class SessionDrillsController extends Controller
     }
 
     private function getDrills($tagId,$tagIds,$search){
-        $drillsQuery = Drill::select('drills.id','drills.name','drills.description','drills.link')
+        $drillsQuery = Drill::query()->select('drills.id','drills.name','drills.description','drills.link')
             ->distinct()
             ->join("drill_tags","drills.id","=","drill_tags.drill_id")
             ->join("tags","tags.id","=","drill_tags.tag_id");
@@ -177,13 +178,14 @@ class SessionDrillsController extends Controller
     }
 
     public function replace(int $sessionDrillId,Request $request){
-        $sessionDrill = SessionDrill::where("id",$sessionDrillId)->first(); 
+        $sessionDrill = SessionDrill::query()->where("id",$sessionDrillId)->first(); 
         $sessionDrill->drill_id = $request->get("drill");
         $sessionDrill->save();
 
         $session = $sessionDrill->session;
 
-        $drills = SessionDrill::select('drills.id','drills.name','drills.description','session_drills.id as session_drill_id')
+        $drills = SessionDrill::query()
+            ->select('drills.id','drills.name','drills.description','session_drills.id as session_drill_id')
             ->join("drills","drills.id","=","session_drills.drill_id")
             ->where("session_id","=",$sessionDrill->session_id)
             ->get();

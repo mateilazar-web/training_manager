@@ -20,13 +20,15 @@ class TileCurrentSession extends Component
 
     public function render()
     {
-        $session = Session::select('id', 'name')
+        $session = Session::query()
+            ->select('id', 'name')
             ->where('user_id', Auth::user()->id)
             ->orderBy('created_at', 'desc')
             ->first();
 
         if (! empty($session)) {
-            $drills = SessionDrill::select('drills.id', 'drills.name', 'drills.description', 'drills.link', 'session_drills.id as session_drill_id')
+            $drills = SessionDrill::query()
+                ->select('drills.id', 'drills.name', 'drills.description', 'drills.link', 'session_drills.id as session_drill_id')
                 ->join("drills", "drills.id", "=", "session_drills.drill_id")
                 ->where("session_id", "=", $session->id)
                 ->get();

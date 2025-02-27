@@ -75,7 +75,8 @@ class SessionController extends Controller
                 ->header('Content-Type', 'text/plain');
         }
 
-        $collection = SessionDrill::where("session_id","=",$session->id)->get(['id']);
+        $collection = SessionDrill::query()
+            ->where("session_id","=",$session->id)->get(['id']);
         SessionDrill::destroy($collection->toArray());
         
         foreach ($request['drillIds'] as $drillId){

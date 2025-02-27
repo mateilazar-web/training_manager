@@ -20,7 +20,8 @@ class DrillController extends Controller
     {
         $tags = Tag::all();
 
-        $drills = Drill::select('id','name','description','link')->orderBy('id','asc')->paginate(10);
+        $drills = Drill::query()
+            ->select('id','name','description','link')->orderBy('id','asc')->paginate(10);
 
         $search = $this->searchParameter;
 
@@ -91,7 +92,8 @@ class DrillController extends Controller
      */
     public function show(Drill $drill)
     {
-        $tags = Drill::select('tags.id','tags.name')
+        $tags = Drill::query()
+            ->select('tags.id','tags.name')
             ->join("drill_tags","drills.id","=","drill_tags.drill_id")
             ->join("tags","tags.id","=","drill_tags.tag_id")
             ->where("drills.id","=",$drill->id)
@@ -109,7 +111,8 @@ class DrillController extends Controller
     public function edit(Drill $drill)
     {
         $tags = Tag::all();
-        $drillTags = DrillTag::where('drill_id','=',$drill->id)
+        $drillTags = DrillTag::query()
+            ->where('drill_id','=',$drill->id)
             ->pluck('tag_id')
             ->toArray();
 
@@ -176,7 +179,8 @@ class DrillController extends Controller
 
         $search = $request->get("name");
 
-        $drillsQuery = Drill::select('drills.id','drills.name','drills.description','drills.link')
+        $drillsQuery = Drill::query()
+            ->select('drills.id','drills.name','drills.description','drills.link')
             ->distinct()
             ->join("drill_tags","drills.id","=","drill_tags.drill_id")
             ->join("tags","tags.id","=","drill_tags.tag_id")

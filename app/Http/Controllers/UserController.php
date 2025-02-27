@@ -28,7 +28,7 @@ class UserController extends Controller
             $users = User::all();
         } else {
             if (Auth::user()->userTeamRoles[0]->role == "Owner") {
-                $team = Team::find(Auth::user()->userTeamRoles[0]->team_id);
+                $team = Team::query()->find(Auth::user()->userTeamRoles[0]->team_id);
                 $users = DB::table('users')
                     ->join('roles', 'users.role_id', '=', 'roles.id')
                     ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
