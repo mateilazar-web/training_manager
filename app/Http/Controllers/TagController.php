@@ -17,7 +17,7 @@ class TagController extends Controller
     {
         $tags = Tag::query()->first()->paginate(10);
 
-        return view('tags.index',compact('tags'))
+        return view('tags.index', compact('tags'))
             ->with(request()->input('page'));
     }
 
@@ -46,41 +46,41 @@ class TagController extends Controller
         Tag::query()->create($request->all());
 
         return redirect()->route('tags.index')
-                        ->with('success','Tag created successfully.');
+                        ->with('success', 'Tag created successfully.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Tag  $Tag
+     * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
     public function show(Tag $tag)
     {
         $drills = $tag->drillTags()
-            ->join("drills","drills.id","=","drill_tags.drill_id")
-            ->where("drill_tags.tag_id","=",$tag->id)
-            ->select('drills.id','drills.name','drills.description','drills.link')
+            ->join("drills", "drills.id", "=", "drill_tags.drill_id")
+            ->where("drill_tags.tag_id", "=", $tag->id)
+            ->select('drills.id', 'drills.name', 'drills.description', 'drills.link')
             ->paginate(10);
-        return view('tags.show',compact('tag','drills'));
+        return view('tags.show', compact('tag', 'drills'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Tag  $Tag
+     * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
     public function edit(Tag $tag)
     {
-        return view('tags.edit',compact('tag'));
+        return view('tags.edit', compact('tag'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tag  $Tag
+     * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Tag $tag)
@@ -92,22 +92,22 @@ class TagController extends Controller
         $tag->name = $request['name'];
         $tag->save();
 
-        return redirect()->route('tags.show',$tag->id)
-            ->with('success','Tag updated successfully.');
+        return redirect()->route('tags.show', $tag->id)
+            ->with('success', 'Tag updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Tag  $Tag
+     * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
     public function destroy(Tag $tag)
     {
-        DrillTag::query()->where("tag_id",$tag->id)->delete();
+        DrillTag::query()->where("tag_id", $tag->id)->delete();
         $tag->delete();
 
         return redirect()->route('tags.index')
-                        ->with('success','Tag deleted successfully');
+                        ->with('success', 'Tag deleted successfully');
     }
 }

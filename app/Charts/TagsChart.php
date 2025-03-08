@@ -3,17 +3,17 @@
 namespace App\Charts;
 
 use App\Enums\UserTeamRole;
-use App\Models\Tag;
 use App\Models\SessionDrill;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Tag;
 use Fidum\ChartTile\Charts\Chart;
 use Fidum\ChartTile\Contracts\ChartFactory;
+use Illuminate\Support\Facades\Auth;
 
 class TagsChart implements ChartFactory
 {
     public static function make(array $settings): ChartFactory
     {
-        return new self;
+        return new self();
     }
 
     public function chart(): Chart
@@ -37,7 +37,7 @@ class TagsChart implements ChartFactory
                 ->join("sessions", "sessions.id", "=", "session_drills.session_id")
                 ->where("drill_tags.tag_id", $tag->id);
 
-            if (! empty(Auth::user())) {
+            if (!empty(Auth::user())) {
                 if (Auth::user()->userTeamRoles->count() > 0) {
                     if (Auth::user()->userTeamRoles[0]->role !== UserTeamRole::Pending->value) {
                         $sessionDrills = $sessionDrills->where("sessions.user_id", Auth::user()->id);
@@ -50,7 +50,7 @@ class TagsChart implements ChartFactory
 
         $total = array_sum($data);
 
-        if (! empty($total)) {
+        if (!empty($total)) {
             $data = array_map(
                 function ($element, $total) {
                     return (int)($element * 100 / $total);

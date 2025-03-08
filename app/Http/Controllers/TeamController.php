@@ -9,8 +9,6 @@ use App\Models\User;
 use App\Models\UserTeamRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-
 
 class TeamController extends Controller
 {
@@ -133,7 +131,8 @@ class TeamController extends Controller
      * @param  \App\Models\Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Team $team) {
+    public function destroy(Team $team)
+    {
         abort(501);
     }
 

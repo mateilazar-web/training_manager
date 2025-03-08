@@ -16,7 +16,7 @@ class RoleController extends Controller
     {
         $roles = Role::all();
 
-        return view('roles.index',compact('roles'))
+        return view('roles.index', compact('roles'))
             ->with(request()->input('page'));
     }
 
@@ -42,12 +42,12 @@ class RoleController extends Controller
             'name' => 'required'
         ]);
 
-        $role = new Role();        
+        $role = new Role();
         $role->name = $request['name'];
-        $role->save();        
+        $role->save();
 
-        return redirect()->route('roles.show',$role->id)
-                        ->with('success','Role created successfully.');
+        return redirect()->route('roles.show', $role->id)
+                        ->with('success', 'Role created successfully.');
     }
 
     /**
@@ -58,7 +58,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        return view('roles.show',compact('role'));
+        return view('roles.show', compact('role'));
     }
 
     /**
@@ -69,7 +69,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        return view('roles.edit',compact('role'));
+        return view('roles.edit', compact('role'));
     }
 
     /**
@@ -89,8 +89,8 @@ class RoleController extends Controller
         
         $role->save();
 
-        return redirect()->route('roles.show',$role->id)
-            ->with('success','Role updated successfully.');
+        return redirect()->route('roles.show', $role->id)
+            ->with('success', 'Role updated successfully.');
     }
 
     /**

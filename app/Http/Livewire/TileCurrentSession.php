@@ -3,9 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Session;
-use Livewire\Component;
 use App\Models\SessionDrill;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class TileCurrentSession extends Component
 {
@@ -26,7 +26,7 @@ class TileCurrentSession extends Component
             ->orderBy('created_at', 'desc')
             ->first();
 
-        if (! empty($session)) {
+        if (!empty($session)) {
             $drills = SessionDrill::query()
                 ->select('drills.id', 'drills.name', 'drills.description', 'drills.link', 'session_drills.id as session_drill_id')
                 ->join("drills", "drills.id", "=", "session_drills.drill_id")

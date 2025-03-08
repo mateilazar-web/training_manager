@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\UserTeamRole;
 use App\Models\UserTeamRole as ModelsUserTeamRole;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -55,7 +54,7 @@ class User extends Authenticatable
 
     public function scopeVisibleTo(Builder $query, User $user)
     {
-        // If you are the owner or the coach of the team, 
+        // If you are the owner or the coach of the team,
         // you can see all users in that team
         if (count($user->userTeamRoles) > 0) {
             $team = $user->userTeamRoles[0]->team;

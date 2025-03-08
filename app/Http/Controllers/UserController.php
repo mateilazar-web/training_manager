@@ -87,7 +87,7 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $teams = Team::all();
-        $teamRoles = array_map(fn($teamRole) => $teamRole->value, UserTeamRole::cases());
+        $teamRoles = array_map(fn ($teamRole) => $teamRole->value, UserTeamRole::cases());
 
         $canEditUserRole = false;
         if (Auth::user()->role->name == "Admin") {
@@ -121,7 +121,6 @@ class UserController extends Controller
         ]);
 
         if (!isset($user->userTeamRoles[0])) {
-
             $teamRole = new ModelsUserTeamRole();
             $teamRole->team_id = $request["team"];
             $teamRole->role = UserTeamRole::Pending;
@@ -156,7 +155,7 @@ class UserController extends Controller
             'new_password' => 'required|confirmed|min:8',
         ]);
 
-        if (! Hash::check($request->old_password, $user->password)) {
+        if (!Hash::check($request->old_password, $user->password)) {
             throw ValidationException::withMessages([
                 'old_password' => ['The provided password does not match your current password.'],
             ]);

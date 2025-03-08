@@ -10,9 +10,9 @@ class Sort extends Controller
     {
         Drill::query()->where('name', 'Drill1')->delete();
 
-        $drill = new Drill(); 
+        $drill = new Drill();
         $drill->name = "Drill1";
-        $drill->description = "Drill description"; 
+        $drill->description = "Drill description";
         $drill->save();
 
         foreach (Drill::all() as $drill) {

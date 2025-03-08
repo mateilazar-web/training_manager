@@ -70,16 +70,16 @@ class SessionController extends Controller
 
     public function reorder(Request $request, Session $session)
     {
-        if (empty($request['drillIds'])){
+        if (empty($request['drillIds'])) {
             return response('Session drills not provided', 400)
                 ->header('Content-Type', 'text/plain');
         }
 
         $collection = SessionDrill::query()
-            ->where("session_id","=",$session->id)->get(['id']);
+            ->where("session_id", "=", $session->id)->get(['id']);
         SessionDrill::destroy($collection->toArray());
         
-        foreach ($request['drillIds'] as $drillId){
+        foreach ($request['drillIds'] as $drillId) {
             $sessionDrill = new SessionDrill();
             $sessionDrill->session_id = $session->id;
             $sessionDrill->drill_id = $drillId;

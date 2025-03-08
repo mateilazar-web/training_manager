@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserTeamRole;
-use App\Models\Tag;
 use App\Models\Session;
 use App\Models\SessionDrill;
+use App\Models\Tag;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -50,7 +50,7 @@ class SessionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $session
      * @return \Illuminate\Http\Response
      */
     public function edit(Session $session)
@@ -104,8 +104,8 @@ class SessionController extends Controller
         $buttonText = "Team Sessions";
 
         return view(
-            'sessions.index', 
-            compact('sessions', 'search', 'currentSessionId', 'teamUsers', 'userIds','buttonRoute','buttonText')
+            'sessions.index',
+            compact('sessions', 'search', 'currentSessionId', 'teamUsers', 'userIds', 'buttonRoute', 'buttonText')
         )
             ->with(request()->input('page'));
     }
@@ -147,7 +147,7 @@ class SessionController extends Controller
         $buttonText = "Team Sessions";
 
         return view(
-            'sessions.index', 
+            'sessions.index',
             compact('sessions', 'search', 'currentSessionId', 'teamUsers', 'userIds', 'buttonRoute', 'buttonText')
         )
             ->with(request()->input('page'));
@@ -156,7 +156,7 @@ class SessionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $session
      * @return \Illuminate\Http\Response
      */
     public function show(Session $session)
@@ -226,8 +226,8 @@ class SessionController extends Controller
         $buttonText = "All";
 
         return view(
-            'sessions.index', 
-            compact('sessions', 'search', 'currentSessionId', 'teamUsers', 'userIds','buttonRoute','buttonText')
+            'sessions.index',
+            compact('sessions', 'search', 'currentSessionId', 'teamUsers', 'userIds', 'buttonRoute', 'buttonText')
         )
             ->with(request()->input('page'));
     }
@@ -236,7 +236,7 @@ class SessionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $session
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Session $session)

@@ -16,8 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserTeamRole extends Model
 {
-
-
     /**
      * @var array
      */
