@@ -21,7 +21,7 @@ class UserPolicy
     public function updateField(User $user, User $record, $field)
     {
         // Define editable fields based on user role or logic
-        $editableFields = $user === $record || $user->role->name === 'Admin'
+        $editableFields = $user->id === $record->id || $user->role->name === 'Admin'
             ? ['name', 'email', 'team', 'team_role'] // Admin can edit these fields
             : [];          // Regular users can only edit these fields
 

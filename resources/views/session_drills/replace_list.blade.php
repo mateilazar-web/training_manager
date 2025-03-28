@@ -1,5 +1,8 @@
 @extends('layout')
 
+@push('head')
+<script src="{{ asset('js/replace_list.js') }}"></script>
+@endpush
 
 
 @section('content')
@@ -48,7 +51,8 @@
         @include('session_drills/drills')
         
         <div class="pull-right">
-            <button type="submit" class="btn btn-primary">Replace drill</button>
+            <button type="submit" class="btn btn-primary" id="replaceDrillBtn" disabled>Replace drill</button>
+            <a class="btn btn-info" href="{{ route('sessions.show',$sessionDrill->session_id) }}">Back</a>
         </div>
     </form>
     {{ $drills->links() }}

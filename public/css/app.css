@@ -18,3 +18,8 @@
 .table td:first-child {
     width: 100%;
 }
+
+/* Hide the arrow on the acordion buttons */
+.no-arrow::after {
+    display: none !important;
+}

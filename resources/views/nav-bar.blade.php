@@ -8,7 +8,9 @@
 
 
                 <li class="nav-item ">
-                    <a class="nav-link  @if (Str::is('', Route::currentRouteName())) active @endif" href="/">Home</a>
+                    <a class="nav-link  @if (in_array(Route::currentRouteName(),['','home'])) active @endif" href="/">
+                        Home
+                    </a>
                 </li>
 
                 @can('view-user-section')

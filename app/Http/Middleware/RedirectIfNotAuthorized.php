@@ -21,7 +21,7 @@ class RedirectIfNotAuthorized
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            abort(403);
+            return redirect()->route('login');
         }
 
         /** @var User $authenticatedUser */

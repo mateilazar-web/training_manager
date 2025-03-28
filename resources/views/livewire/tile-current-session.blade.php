@@ -1,7 +1,6 @@
-<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('css/order_list.css') }}" rel="stylesheet" type="text/css">
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -18,28 +17,12 @@
             role="option"
             style="">
             <div class="flex d-grid gap-2">
-
                 <div class="accordion-item ">
                     <h2 class="accordion-header" id="panelsStayOpen-heading{{ $drill->id }}">
-                        <button class="accordion-button collapsed " type="button" data-bs-toggle="collapse"
-                            data-bs-target="#panelsStayOpen-collapse{{ $drill->id }}" aria-expanded="false"
-                            aria-controls="panelsStayOpen-collapse{{ $drill->id }}">
+                        <button class="accordion-button collapsed no-arrow" type="button">
                             {{ $drill->name }}
                         </button>
                     </h2>
-                    <div id="panelsStayOpen-collapse{{ $drill->id }}" class="accordion-collapse collapse"
-                        aria-labelledby="panelsStayOpen-heading{{ $drill->id }}">
-                        <div class="accordion-body">
-                            {!! $drill->description !!}
-                            {!! $drill->link !!}
-                            <form action="{{ route('session_drills.replace_list', $drill->session_drill_id) }}"
-                                method="POST">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" class="btn btn-primary">Replace drill</button>
-                            </form>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

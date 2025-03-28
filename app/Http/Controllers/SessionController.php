@@ -97,6 +97,7 @@ class SessionController extends Controller
 
         $currentSessionId = Session::query()
             ->select('id')
+            ->where('user_id', Auth::user()->id)
             ->orderBy('created_at', 'desc')
             ->first();
 
