@@ -22,8 +22,12 @@ class TeamController extends Controller
         $teams = Team::all();
 
         $team = null;
-        if (Auth::user()->userTeamRoles->count() > 0) {
-            $team = Auth::user()->userTeamRoles[0];
+
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::user();
+
+        if (count($authenticatedUser->userTeamRoles) > 0) {
+            $team = $authenticatedUser->userTeamRoles[0];
         }
 
         $search = "";
@@ -50,13 +54,16 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::user();
+
         $team = new Team();
         $team->name = $request['name'];
-        $team->created_by = Auth::user()->id;
+        $team->created_by = $authenticatedUser->id;
         $team->save();
 
         $userTeamRole = new UserTeamRole();
-        $userTeamRole->user_id = Auth::user()->id;
+        $userTeamRole->user_id = $authenticatedUser->id;
         $userTeamRole->team_id = $team->id;
         $userTeamRole->role = EnumsUserTeamRole::Owner;
         $userTeamRole->save();
@@ -142,9 +149,12 @@ class TeamController extends Controller
 
         $teams = Team::all();
 
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::user();
+
         $team = null;
-        if (Auth::user()->userTeamRoles->count() > 0) {
-            $team = Auth::user()->userTeamRoles[0];
+        if (count($authenticatedUser->userTeamRoles) > 0) {
+            $team = $authenticatedUser->userTeamRoles[0];
         }
 
         $listType = TeamRoleAssignStatus::Unassigned;
@@ -161,9 +171,12 @@ class TeamController extends Controller
             'team' => 'required'
         ]);
 
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::user();
+
         $userTeamRole = new UserTeamRole();
         $userTeamRole->role = EnumsUserTeamRole::Pending;
-        $userTeamRole->user_id = Auth::user()->id;
+        $userTeamRole->user_id = $authenticatedUser->id;
         $userTeamRole->team_id = $request["team"];
         $userTeamRole->save();
 

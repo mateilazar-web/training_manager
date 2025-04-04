@@ -24,11 +24,23 @@ class UserController extends Controller
     {
         $users = [];
 
-        if (Auth::user()->role_id == "1") {
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::user();
+
+        if ($authenticatedUser->role_id == "1") {
             $users = User::all();
         } else {
-            if (Auth::user()->userTeamRoles[0]->role == "Owner") {
-                $team = Team::query()->find(Auth::user()->userTeamRoles[0]->team_id);
+            if (empty($authenticatedUser->userTeamRoles)) {
+                abort(404, "User has no team roles");
+            }
+
+            if ($authenticatedUser->userTeamRoles[0]->role == "Owner") {
+                $team = Team::query()->find($authenticatedUser->userTeamRoles[0]->team_id);
+
+                if (!$team instanceof Team) {
+                    abort(404, "Team not found");
+                }
+
                 $users = DB::table('users')
                     ->join('roles', 'users.role_id', '=', 'roles.id')
                     ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
@@ -89,11 +101,14 @@ class UserController extends Controller
         $teams = Team::all();
         $teamRoles = array_map(fn ($teamRole) => $teamRole->value, UserTeamRole::cases());
 
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::user();
+
         $canEditUserRole = false;
-        if (Auth::user()->role->name == "Admin") {
+        if ($authenticatedUser->role->name == "Admin") {
             $canEditUserRole = true;
         } else {
-            if (Auth::user()->userTeamRoles[0]->role == UserTeamRole::Owner->value) {
+            if ($authenticatedUser->userTeamRoles[0]->role == UserTeamRole::Owner->value) {
                 $canEditUserRole = true;
             }
         }
@@ -155,13 +170,13 @@ class UserController extends Controller
             'new_password' => 'required|confirmed|min:8',
         ]);
 
-        if (!Hash::check($request->old_password, $user->password)) {
+        if (!Hash::check($request->input('old_password'), $user->password)) {
             throw ValidationException::withMessages([
                 'old_password' => ['The provided password does not match your current password.'],
             ]);
         }
 
-        $user->password = Hash::make($request->new_password);
+        $user->password = Hash::make($request->input('new_password'));
         $user->save();
 
         return redirect()->route('users.show', $user->id)

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Session;
 use App\Models\SessionDrill;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -20,9 +21,12 @@ class TileCurrentSession extends Component
 
     public function render()
     {
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::user();
+
         $session = Session::query()
             ->select('id', 'name')
-            ->where('user_id', Auth::user()->id)
+            ->where('user_id', $authenticatedUser->id)
             ->orderBy('created_at', 'desc')
             ->first();
 

@@ -55,7 +55,7 @@ class RedirectIfNotAuthorized
 
                         return $next($request);
                     }
-                }   
+                }
             
                 if ($currentRoute->uri == "teams") {
                     if (!in_array($currentRoute->getName(), ["teams.show", "teams.edit", "teams.update"])) {
