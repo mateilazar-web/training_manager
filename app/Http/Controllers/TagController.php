@@ -58,6 +58,7 @@ class TagController extends Controller
     public function show(Tag $tag)
     {
         $drills = $tag->drillTags()
+            ->getQuery()
             ->join("drills", "drills.id", "=", "drill_tags.drill_id")
             ->where("drill_tags.tag_id", "=", $tag->id)
             ->select('drills.id', 'drills.name', 'drills.description', 'drills.link')

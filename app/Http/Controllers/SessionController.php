@@ -50,7 +50,7 @@ class SessionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $session
+     * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
     public function edit(Session $session)
@@ -61,7 +61,13 @@ class SessionController extends Controller
 
     public function generate($id)
     {
+        /** @var Session $session */
         $session = Session::query()->find($id);
+
+        if (!$session) {
+            abort(404, "Session not found");
+        }
+
         $generator = new Generator($session);
         $generator->run();
 
@@ -75,11 +81,14 @@ class SessionController extends Controller
      */
     public function index()
     {
+        /** @var \App\Models\User $authenticatedUser */
+        $authenticatedUser = Auth::user();
+
         $sessions = Session::query()
             ->select('sessions.id', 'sessions.name', 'tag_id', 'users.name as user_name', 'user_team_roles.role as user_team_role')
             ->join('users', 'users.id', '=', 'sessions.user_id')
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
-            ->where('sessions.user_id', Auth::user()->id)
+            ->where('sessions.user_id', $authenticatedUser->id)
             ->orderBy('sessions.created_at', 'desc')
             ->paginate(10);
 
@@ -87,17 +96,17 @@ class SessionController extends Controller
         $teamUsers = User::query()
             ->select('users.id', 'users.name')
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
-            ->where('team_id', Auth::user()->userTeamRoles[0]->team_id)
+            ->where('team_id', $authenticatedUser->userTeamRoles[0]->team_id)
             ->where('user_team_roles.role', '!=', UserTeamRole::Pending->value)
             ->get();
 
-        $userIds[] = Auth::user()->id;
+        $userIds[] = $authenticatedUser->id;
 
         $search = $this->searchParameter;
 
         $currentSessionId = Session::query()
             ->select('id')
-            ->where('user_id', Auth::user()->id)
+            ->where('user_id', $authenticatedUser->id)
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -120,6 +129,9 @@ class SessionController extends Controller
 
     public function search(Request $request)
     {
+        /** @var \App\Models\User @authenticatedUser */
+        $authenticatedUser = Auth::user();
+
         $this->searchParameter = $request->get("name") ?? "";
 
         $sessions = Session::query()
@@ -139,7 +151,7 @@ class SessionController extends Controller
         $teamUsers = User::query()
             ->select('users.id', 'users.name')
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
-            ->where('team_id', Auth::user()->userTeamRoles[0]->team_id)
+            ->where('team_id', $authenticatedUser->userTeamRoles[0]->team_id)
             ->get();
 
         $userIds = $request->get("teamUsers");
@@ -157,7 +169,7 @@ class SessionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $session
+     * @param  Session  $session
      * @return \Illuminate\Http\Response
      */
     public function show(Session $session)
@@ -179,6 +191,9 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
+        /** @var \App\Models\User @authenticatedUser */
+        $authenticatedUser = Auth::user();
+
         $request->validate([
             'name' => 'required',
             'tag' => 'required',
@@ -187,7 +202,7 @@ class SessionController extends Controller
         $session = new Session();
         $session->name = $request['name'];
         $session->tag_id = $request['tag'];
-        $session->user_id = Auth::user()->id;
+        $session->user_id = $authenticatedUser->id;
 
         $session->save();
 
@@ -197,11 +212,14 @@ class SessionController extends Controller
 
     public function teamSessions()
     {
+        /** @var \App\Models\User @authenticatedUser */
+        $authenticatedUser = Auth::user();
+
         $sessions = Session::query()
             ->select('sessions.id', 'sessions.name', 'tag_id', 'users.name as user_name', 'user_team_roles.role as user_team_role')
             ->join('users', 'users.id', '=', 'sessions.user_id')
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
-            ->where('team_id', Auth::user()->userTeamRoles[0]->team_id)
+            ->where('team_id', $authenticatedUser->userTeamRoles[0]->team_id)
             ->where('sessions.created_at', '>=', Carbon::now()->subDays(7))
             ->orderBy('sessions.created_at', 'desc')
             ->paginate(10);
@@ -210,11 +228,11 @@ class SessionController extends Controller
         $teamUsers = User::query()
             ->select('users.id', 'users.name')
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
-            ->where('team_id', Auth::user()->userTeamRoles[0]->team_id)
+            ->where('team_id', $authenticatedUser->userTeamRoles[0]->team_id)
             ->where('user_team_roles.role', '!=', UserTeamRole::Pending->value)
             ->get();
 
-        $userIds[] = Auth::user()->id;
+        $userIds[] = $authenticatedUser->id;
 
         $search = $this->searchParameter;
 
@@ -237,7 +255,7 @@ class SessionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $session
+     * @param  Session $session
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Session $session)

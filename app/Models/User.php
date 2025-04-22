@@ -20,6 +20,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Session[] $sessions
  * @property Role $role
  * @property ModelsUserTeamRole[] $userTeamRoles
+ * @method static \Illuminate\Database\Eloquent\Builder|static visibleTo(\App\Models\User $user)
  */
 class User extends Authenticatable
 {
@@ -52,7 +53,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\UserTeamRole');
     }
 
-    public function scopeVisibleTo(Builder $query, User $user)
+    public function scopeVisibleTo(Builder $query, User $user): Builder
     {
         // If you are the owner or the coach of the team,
         // you can see all users in that team

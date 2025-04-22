@@ -2,3 +2,8 @@ parameters:
     level: 2
     paths:
         - app
+    # Optional: autoload your models
+    scanFiles:
+        - app/Models/User.php
+    ignoreErrors:
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::visibleTo\(\)#'

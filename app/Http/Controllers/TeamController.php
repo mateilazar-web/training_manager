@@ -80,10 +80,11 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        //$team = Team::find($team->user->userTeamRoles[0]->team_id);
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::user();
 
         $users = User::query()
-            ->visibleTo(auth()->user())
+            ->visibleTo($authenticatedUser)
             ->join('user_team_roles', 'users.id', '=', 'user_team_roles.user_id')
             ->where('user_team_roles.team_id', $team->id)
             ->select('users.id', 'users.name', 'user_team_roles.role')
@@ -180,8 +181,13 @@ class TeamController extends Controller
         $userTeamRole->team_id = $request["team"];
         $userTeamRole->save();
 
+        /** @var Team $team */
         $team = Team::query()->find($request["team"]);
 
+        if (!$team) {
+            abort(404, "Team not found");
+        }
+        
         return redirect()->route('teams.show', $team->id)
             ->with('success', 'Access request sent successfully.');
     }

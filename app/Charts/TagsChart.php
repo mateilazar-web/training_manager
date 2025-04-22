@@ -36,11 +36,15 @@ class TagsChart implements ChartFactory
                 ->join("tags", "drill_tags.tag_id", "=", "tags.id")
                 ->join("sessions", "sessions.id", "=", "session_drills.session_id")
                 ->where("drill_tags.tag_id", $tag->id);
-
+            
             if (!empty(Auth::user())) {
-                if (Auth::user()->userTeamRoles->count() > 0) {
-                    if (Auth::user()->userTeamRoles[0]->role !== UserTeamRole::Pending->value) {
-                        $sessionDrills = $sessionDrills->where("sessions.user_id", Auth::user()->id);
+
+                /** @var \App\Models\User $authenticatedUser */
+                $authenticatedUser = Auth::user();
+
+                if (count($authenticatedUser->userTeamRoles) > 0) {
+                    if ($authenticatedUser->userTeamRoles[0]->role !== UserTeamRole::Pending->value) {
+                        $sessionDrills = $sessionDrills->where("sessions.user_id", $authenticatedUser->id);
                     }
                 }
             }

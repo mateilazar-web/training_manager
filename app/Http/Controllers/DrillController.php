@@ -11,6 +11,7 @@ use Illuminate\Validation\Rules\In;
 class DrillController extends Controller
 {
     private string $searchParameter = "";
+
     /**
      * Display a listing of the resource.
      *
@@ -146,6 +147,7 @@ class DrillController extends Controller
 
         $existingTags = [];
         foreach ($drill->drillTags()->get() as $drillTag) {
+            /** @var \App\Models\DrillTag $drillTag */
             if (!in_array($drillTag->tag_id, $request['tags'])) {
                 $drillTag->delete();
             } else {
