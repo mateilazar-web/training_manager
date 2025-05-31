@@ -1,0 +1,25 @@
+.box-container {
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+}
+
+.content {
+    flex-grow: 1;
+}
+
+/* Prevent buttons from wrapping in the action column */
+.nowrap {
+    white-space: nowrap;
+}
+
+/* Allow the first column to take remaining space */
+.table th:first-child,
+.table td:first-child {
+    width: 100%;
+}
+
+/* Hide the arrow on the acordion buttons */
+.no-arrow::after {
+    display: none !important;
+}
