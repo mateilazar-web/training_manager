@@ -10,6 +10,7 @@
         "fidum/laravel-dashboard-chart-tile": "^5.0",
         "guzzlehttp/guzzle": "^7.2",
         "krlove/eloquent-model-generator": "^2.0",
+        "laravel/socialite": "^5.20",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
         "spatie/laravel-dashboard": "^2.1",
