@@ -32,7 +32,9 @@ class TeamController extends Controller
 
         $search = "";
 
-        return view('teams.index', compact('teams', 'team', 'search'))
+        $listType = TeamRoleAssignStatus::Admin;
+
+        return view('teams.index', compact('teams', 'team', 'search','listType'))
             ->with(request()->input('page'));
     }
 

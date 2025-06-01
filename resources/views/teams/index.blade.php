@@ -27,9 +27,11 @@ use App\Enums\TeamRoleAssignStatus;
 </div>
 @endif
 <br />
+
 @if ($listType == TeamRoleAssignStatus::Unassigned)
 @include('teams/request_access')
 @elseif ($listType == TeamRoleAssignStatus::Admin)
 @include('teams/list')
 @endif
+
 @endsection

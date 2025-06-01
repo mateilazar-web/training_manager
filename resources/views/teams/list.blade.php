@@ -13,12 +13,12 @@
         <tr>
             <th>Team</th>
             <th>Owner</th>
-            <th width="280px">Action</th>
+            <th class="nowrap">Action</th>
         </tr>
         @foreach ($teams as $team)
         <tr>
             @include('teams/item')
-            <td>
+            <td class="nowrap">
                 <form action="{{ route('teams.destroy',$team->id) }}" method="POST">
                     <a class="btn btn-info" href="{{ route('teams.show',$team->id) }}">Show</a>
                     <a class="btn btn-primary" href="{{ route('teams.edit',$team->id) }}">Edit</a>

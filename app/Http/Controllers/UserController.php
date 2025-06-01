@@ -83,8 +83,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
-    {
-        $teamRole = $user->userTeamRoles[0];
+    {        
+        $teamRole = isset($user->userTeamRoles[0]) ? $user->userTeamRoles[0] : null;
 
         return view('users.show', compact('user', 'teamRole'));
     }
