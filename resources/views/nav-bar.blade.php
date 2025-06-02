@@ -37,7 +37,8 @@
 
                 @endcan
 
-                @if (Auth::user() !== null && Auth::user()->role->name == 'Admin')
+                @if (Auth::user() !== null && Auth::user()->role->name === 'Admin')
+                
                 <li class="nav-item">
                     <a class="nav-link @if (Str::is('roles*', Route::currentRouteName())) active @endif" href="{{ route('roles.index') }}">Roles</a>
                 </li>
