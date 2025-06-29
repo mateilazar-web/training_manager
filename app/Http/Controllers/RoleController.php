@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -16,8 +17,10 @@ class RoleController extends Controller
     {
         $roles = Role::all();
 
-        return view('roles.index', compact('roles'))
-            ->with(request()->input('page'));
+        $data = compact('roles');
+        $data['page'] = request()->input('page');
+
+        return response()->view('roles.index', $data);
     }
 
     /**
@@ -27,14 +30,14 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view("roles.create");
+        return response()->view("roles.create");
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -58,7 +61,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        return view('roles.show', compact('role'));
+        return response()->view('roles.show', compact('role'));
     }
 
     /**
@@ -69,7 +72,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        return view('roles.edit', compact('role'));
+        return response()->view('roles.edit', compact('role'));
     }
 
     /**
@@ -77,7 +80,7 @@ class RoleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function update(Request $request, Role $role)
     {

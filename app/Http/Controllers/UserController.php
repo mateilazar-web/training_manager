@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\UserTeamRole as ModelsUserTeamRole;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -50,9 +51,10 @@ class UserController extends Controller
             }
         }
 
+        $data = compact('users');
+        $data['page'] = request()->input('page');
 
-        return view('users.index', compact('users'))
-            ->with(request()->input('page'));
+        return response()->view('users.index', $data);
     }
 
     /**
@@ -83,10 +85,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
-    {        
+    {
         $teamRole = isset($user->userTeamRoles[0]) ? $user->userTeamRoles[0] : null;
 
-        return view('users.show', compact('user', 'teamRole'));
+        return response()->view('users.show', compact('user', 'teamRole'));
     }
 
     /**
@@ -114,7 +116,7 @@ class UserController extends Controller
         }
 
 
-        return view('users.edit', compact('user', 'roles', 'teams', 'teamRoles', 'canEditUserRole'));
+        return response()->view('users.edit', compact('user', 'roles', 'teams', 'teamRoles', 'canEditUserRole'));
     }
 
     /**
@@ -122,7 +124,7 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function update(Request $request, User $user)
     {

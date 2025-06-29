@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Drill;
 use App\Models\DrillTag;
 use App\Models\Tag;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\In;
 
@@ -31,8 +32,10 @@ class DrillController extends Controller
             $tagIds = [];
         }
 
-        return view('drills.index', compact('drills', 'search', 'tags', 'tagIds'))
-            ->with(request()->input('page'));
+        $data = compact('drills', 'search', 'tags', 'tagIds');
+        $data['page'] = request()->input('page');
+
+        return response()->view('drills.index', $data);
     }
 
     /**
@@ -43,14 +46,14 @@ class DrillController extends Controller
     public function create()
     {
         $tags = Tag::all();
-        return view("drills.create", compact("tags"));
+        return response()->view("drills.create", compact("tags"));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -77,8 +80,7 @@ class DrillController extends Controller
             $drillTag->drill_id = $drill->id;
             $drillTag->tag_id = $tagId;
             $drillTag->save();
-        }
-        
+        }     
 
         return redirect()->route('drills.show', $drill->id)
                         ->with('success', 'Drill created successfully.');
@@ -99,7 +101,8 @@ class DrillController extends Controller
             ->where("drills.id", "=", $drill->id)
             ->distinct()
             ->get();
-        return view('drills.show', compact('drill', 'tags'));
+        
+        return response()->view('drills.show', compact('drill', 'tags'));
     }
 
     /**
@@ -116,7 +119,7 @@ class DrillController extends Controller
             ->pluck('tag_id')
             ->toArray();
 
-        return view('drills.edit', compact('drill', 'tags', 'drillTags'));
+        return response()->view('drills.edit', compact('drill', 'tags', 'drillTags'));
     }
 
     /**
@@ -124,7 +127,7 @@ class DrillController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Drill  $drill
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function update(Request $request, Drill $drill)
     {
@@ -206,7 +209,7 @@ class DrillController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Drill  $drill
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function destroy(Drill $drill)
     {

@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 class Session extends Model
 {
     /**
-     * @var array
+     * @var array<int,string>
      */
     protected $fillable = ['tag_id', 'user_id', 'name', 'created_at', 'updated_at'];
 

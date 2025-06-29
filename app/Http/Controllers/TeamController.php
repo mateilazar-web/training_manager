@@ -34,8 +34,10 @@ class TeamController extends Controller
 
         $listType = TeamRoleAssignStatus::Admin;
 
-        return view('teams.index', compact('teams', 'team', 'search','listType'))
-            ->with(request()->input('page'));
+        $data = compact('teams', 'team', 'search', 'listType');
+        $data['page'] = request()->input('page');
+
+        return response()->view('teams.index', $data);
     }
 
     /**
@@ -45,14 +47,14 @@ class TeamController extends Controller
      */
     public function create()
     {
-        return view("teams.create");
+        return response()->view("teams.create");
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -100,7 +102,7 @@ class TeamController extends Controller
             ->where('role', '!=', EnumsUserTeamRole::Pending->value)
             ->where('role', '!=', EnumsUserTeamRole::Owner->value);
 
-        return view('teams.show', compact('team', 'teamUsers', 'pendingUsers', 'owner'));
+        return response()->view('teams.show', compact('team', 'teamUsers', 'pendingUsers', 'owner'));
     }
 
     /**
@@ -111,7 +113,7 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        return view('teams.edit', compact('team'));
+        return response()->view('teams.edit', compact('team'));
     }
 
     /**
@@ -119,7 +121,7 @@ class TeamController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Team  $team
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Team $team)
     {

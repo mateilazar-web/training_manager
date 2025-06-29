@@ -37,7 +37,6 @@ class GameDrillChart implements ChartFactory
                 ->where("drill_tags.tag_id", $tag->id);
 
             if (!empty(Auth::user())) {
-
                 /** @var \App\Models\User $authenticatedUser */
                 $authenticatedUser = Auth::user();
 

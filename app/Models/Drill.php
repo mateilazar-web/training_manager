@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 class Drill extends Model
 {
     /**
-     * @var array
+     * @var array<int,string>
      */
     protected $fillable = ['name', 'description', 'created_at', 'updated_at', 'link', 'video'];
 

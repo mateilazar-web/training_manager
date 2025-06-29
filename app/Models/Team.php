@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     /**
-     * @var array
+     * @var array<int,string>
      */
     protected $fillable = ['created_by', 'created_at', 'updated_at', 'name'];
 

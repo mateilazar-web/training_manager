@@ -17,8 +17,11 @@ class TagController extends Controller
     {
         $tags = Tag::query()->first()->paginate(10);
 
-        return view('tags.index', compact('tags'))
-            ->with(request()->input('page'));
+        $data = compact('tags');
+        $data['page'] = request()->input('page');
+
+
+        return response()->view('tags.index', $data);
     }
 
     /**
@@ -28,14 +31,14 @@ class TagController extends Controller
      */
     public function create()
     {
-        return view("tags.create");
+        return response()->view("tags.create");
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -63,7 +66,8 @@ class TagController extends Controller
             ->where("drill_tags.tag_id", "=", $tag->id)
             ->select('drills.id', 'drills.name', 'drills.description', 'drills.link')
             ->paginate(10);
-        return view('tags.show', compact('tag', 'drills'));
+
+        return response()->view('tags.show', compact('tag', 'drills'));
     }
 
     /**
@@ -74,7 +78,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        return view('tags.edit', compact('tag'));
+        return response()->view('tags.edit', compact('tag'));
     }
 
     /**
@@ -82,7 +86,7 @@ class TagController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Tag  $tag
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Tag $tag)
     {
@@ -101,7 +105,7 @@ class TagController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Tag  $tag
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Tag $tag)
     {

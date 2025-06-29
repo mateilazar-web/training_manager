@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     /**
-     * @var array
+     * @var array<int,string>
      */
     protected $fillable = ['created_at', 'updated_at', 'name', 'authorization'];
 }

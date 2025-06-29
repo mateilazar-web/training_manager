@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     /**
-     * @var array
+     * @var array<int,string>
      */
     protected $fillable = ['name', 'created_at', 'updated_at'];
 

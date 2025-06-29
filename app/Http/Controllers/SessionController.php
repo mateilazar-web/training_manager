@@ -24,7 +24,8 @@ class SessionController extends Controller
     public function create()
     {
         $tags = Tag::all();
-        return view("sessions.create", compact('tags'));
+
+        return response()->view("sessions.create", compact('tags'));
     }
 
     /**
@@ -56,7 +57,8 @@ class SessionController extends Controller
     public function edit(Session $session)
     {
         $tags = Tag::all();
-        return view('sessions.edit', compact('session', 'tags'));
+        
+        return response()->view('sessions.edit', compact('session', 'tags'));
     }
 
     public function generate($id)
@@ -113,11 +115,13 @@ class SessionController extends Controller
         $buttonRoute = "sessions.teamSessions";
         $buttonText = "Team Sessions";
 
-        return view(
+        $data = compact('sessions', 'search', 'currentSessionId', 'teamUsers', 'userIds', 'buttonRoute', 'buttonText');
+        $data['page'] = request()->input('page');
+
+        return response()->view(
             'sessions.index',
-            compact('sessions', 'search', 'currentSessionId', 'teamUsers', 'userIds', 'buttonRoute', 'buttonText')
-        )
-            ->with(request()->input('page'));
+            $data
+        );
     }
 
     public function regenerate($id)
@@ -180,14 +184,14 @@ class SessionController extends Controller
             ->where("session_id", "=", $session->id)
             ->get();
 
-        return view('sessions.show', compact('session', 'drills'));
+        return response()->view('sessions.show', compact('session', 'drills'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -256,7 +260,7 @@ class SessionController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  Session $session
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Session $session)
     {

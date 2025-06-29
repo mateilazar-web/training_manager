@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserTeamRole as EnumsUserTeamRole;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,14 +11,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $team_id
  * @property string $created_at
  * @property string $updated_at
- * @property string $role
+ * @property EnumsUserTeamRole $role
  * @property Team $team
  * @property User $user
  */
 class UserTeamRole extends Model
 {
     /**
-     * @var array
+     * @var array<int,string>
      */
     protected $fillable = ['user_id', 'team_id', 'created_at', 'updated_at', 'role'];
 

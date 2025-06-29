@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class DrillTag extends Model
 {
     /**
-     * @var array
+     * @var array<int,string>
      */
     protected $fillable = ['drill_id', 'tag_id', 'created_at', 'updated_at'];
 

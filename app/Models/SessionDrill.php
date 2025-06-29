@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
 class SessionDrill extends Model
 {
     /**
-     * @var array
+     * @var array<int,string>
      */
     protected $fillable = ['drill_id', 'session_id', 'created_at', 'updated_at', 'comment', 'feedback', 'stars'];
 

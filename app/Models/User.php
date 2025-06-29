@@ -5,7 +5,9 @@ namespace App\Models;
 use App\Enums\UserTeamRole;
 use App\Models\UserTeamRole as ModelsUserTeamRole;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property integer $id
@@ -21,22 +23,26 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Role $role
  * @property ModelsUserTeamRole[] $userTeamRoles
  * @method static \Illuminate\Database\Eloquent\Builder|static visibleTo(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|static create(array $attributes = [])
  */
 class User extends Authenticatable
 {
+    use HasFactory, Notifiable;
+
+
     /**
-     * @var array
+     * @var array<int,string>
      */
     protected $fillable = [
-        'role_id', 
-        'name', 
-        'email', 
-        'email_verified_at', 
-        'password', 
-        'remember_token', 
-        'created_at', 
+        'role_id',
+        'name',
+        'email',
+        'email_verified_at',
+        'password',
+        'remember_token',
+        'created_at',
         'updated_at',
-        'google_id', 
+        'google_id',
         'avatar'
     ];
 
