@@ -74,9 +74,14 @@ class GameDrillChart implements ChartFactory
                 'animation' => [
                     'duration' => 0,
                 ],
+                'title' => [
+                    'display' => true,
+                    'text' => 'Session drills by game vs. drill',
+                    'position' => 'top', 
+                ],
                 'legend' => [
                     'display' => true,
-                    'position' => 'right',
+                    'position' => 'bottom',
                 ],
                 'scales' => [
                     'xAxes' => ['display' => false],

@@ -24,25 +24,28 @@
             </div>
             <div class="row content">
                 <style>
-                    html,
-                    body {
-                        height: 100%;
-                        margin-top: 0;
-                        margin-bottom: 0;
+                   html, body {
+                        margin: 0;
+                        padding: 0;
+                        height: auto;
+                        overflow-y: auto; 
+                    }
+
+                    .h_iframe {
+                        width: 100%;
+                        height: 110%; 
+                        margin-bottom: 20px; /* space between the two tiles */
                     }
 
                     .h_iframe iframe {
                         width: 100%;
                         height: 100%;
-                    }
-
-                    .h_iframe {
-                        height: 97%;
+                        border: none;
                     }
                 </style>
                 <div class="container-fluid">
                     <section class="h_iframe">
-                        <iframe src="{{ route('dashboard') }}" frameborder="0" allowfullscreen></iframe>
+                        <iframe src="{{ route('dashboard') }}" frameborder="0" ></iframe>
                     </section>
                 </div>
             </div>

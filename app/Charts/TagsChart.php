@@ -68,15 +68,22 @@ class TagsChart implements ChartFactory
                 'responsive' => true,
                 'maintainAspectRatio' => true,
                 'tooltip' => [
-                    'show' => true // or false, depending on what you want.
+                    'show' => true,
                 ],
                 'animation' => [
                     'duration' => 0,
                 ],
-                'legend' => [
+                'title' => [
                     'display' => true,
-                    'position' => 'right'
+                    'text' => 'Session drills by type',
+                    'position' => 'top', 
                 ],
+                'legend' => [
+                    'display' => true, 
+                    'position' => 'bottom',
+                    
+                ],
+                
                 'scales' => [
                     'xAxes' => ['display' => false],
                     'yAxes' => ['display' => false],
