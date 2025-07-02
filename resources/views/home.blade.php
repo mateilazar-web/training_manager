@@ -33,7 +33,7 @@
 
                         .h_iframe {
                             width: 100%;
-                            height: auto; 
+                            height: 95%; 
                             margin-bottom: 20px; 
                         }
 

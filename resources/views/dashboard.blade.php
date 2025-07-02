@@ -8,6 +8,6 @@ use App\Enums\UserTeamRole;
      @if (Auth::user()
         && Auth::user()->userTeamRoles->count() > 0
         && Auth::user()->userTeamRoles[0]->role !== UserTeamRole::Pending->value)
-            <livewire:tile-current-session position="a3:a3" />
+            <livewire:tile-current-session position="a3:a6" />
     @endif
 </x-dashboard>
