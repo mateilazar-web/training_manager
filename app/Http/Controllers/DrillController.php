@@ -80,7 +80,7 @@ class DrillController extends Controller
             $drillTag->drill_id = $drill->id;
             $drillTag->tag_id = $tagId;
             $drillTag->save();
-        }     
+        }
 
         return redirect()->route('drills.show', $drill->id)
                         ->with('success', 'Drill created successfully.');

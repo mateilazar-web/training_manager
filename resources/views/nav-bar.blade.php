@@ -8,7 +8,7 @@
 
 
                 <li class="nav-item ">
-                    <a class="nav-link  @if (in_array(Route::currentRouteName(),['','home'])) active @endif" href="/">
+                    <a class="nav-link @if (in_array(Route::currentRouteName(),['','home'])) active @endif" href="/">
                         Home
                     </a>
                 </li>

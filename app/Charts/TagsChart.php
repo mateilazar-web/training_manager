@@ -76,10 +76,10 @@ class TagsChart implements ChartFactory
                 'title' => [
                     'display' => true,
                     'text' => 'Session drills by type',
-                    'position' => 'top', 
+                    'position' => 'top',
                 ],
                 'legend' => [
-                    'display' => true, 
+                    'display' => true,
                     'position' => 'bottom',
                     
                 ],

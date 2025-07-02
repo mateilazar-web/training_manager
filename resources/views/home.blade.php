@@ -24,24 +24,24 @@
             </div>
             <div class="row content">
                 <style>
-                   html, body {
-                        margin: 0;
-                        padding: 0;
-                        height: auto;
-                        overflow-y: auto; 
-                    }
+                    html, body {
+                            margin: 0;
+                            padding: 0;
+                            height: auto;
+                            overflow-y: auto; 
+                        }
 
-                    .h_iframe {
-                        width: 100%;
-                        height: 110%; 
-                        margin-bottom: 20px; /* space between the two tiles */
-                    }
+                        .h_iframe {
+                            width: 100%;
+                            height: auto; 
+                            margin-bottom: 20px; 
+                        }
 
-                    .h_iframe iframe {
-                        width: 100%;
-                        height: 100%;
-                        border: none;
-                    }
+                        .h_iframe iframe {
+                            width: 100%;
+                            height: 100%;
+                            border: none;
+                        }
                 </style>
                 <div class="container-fluid">
                     <section class="h_iframe">
