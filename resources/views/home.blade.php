@@ -45,7 +45,13 @@
                 </style>
                 <div class="container-fluid">
                     <section class="h_iframe">
-                        <iframe src="{{ route('dashboard') }}" frameborder="0" ></iframe>
+
+                        @if (isset($type) && $type === 'reports')
+                            <iframe src="{{ route('reports') }}" frameborder="0" ></iframe>
+                        @else
+                            <iframe src="{{ route('dashboard') }}" frameborder="0" ></iframe>
+                        @endif
+                        
                     </section>
                 </div>
             </div>

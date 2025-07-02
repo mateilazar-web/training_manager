@@ -21,6 +21,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('home', compact('type'));
+    }
+
+    public function reports()
+    {
+        $type = "reports";
+        return view('home', compact('type'));
     }
 }

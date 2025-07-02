@@ -28,11 +28,17 @@
                 <li class="nav-item">
                     <a class="nav-link @if (Str::is('drills*', Route::currentRouteName())) active @endif" href="{{ route('drills.index') }}">Drills</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link
                  @if (Str::is('session*', Route::currentRouteName())) active @endif" href="{{ route('sessions.index') }}">
                         Sessions
                     </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link @if (Str::is('home.reports', Route::currentRouteName())) active @endif"
+                        href="{{ route('home.reports') }}">Reports</a>
                 </li>
 
                 @endcan

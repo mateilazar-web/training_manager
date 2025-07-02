@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DrillController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SessionDrillsController;
@@ -52,11 +53,18 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::get('/home/reports', [HomeController::class, 'reports'])->name('home.reports');
+
+    
 Route::get('dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('reports', function () {
+    return view('reports');
+})->name('reports');
 
 Route::middleware([RedirectIfNotAuthorized::class])->group(function () {
     
