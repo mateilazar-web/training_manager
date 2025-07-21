@@ -42,7 +42,7 @@ class TagsChart implements ChartFactory
                 $authenticatedUser = Auth::user();
 
                 if (count($authenticatedUser->userTeamRoles) > 0) {
-                    if ($authenticatedUser->userTeamRoles[0]->role !== UserTeamRole::Pending->value) {
+                    if ($authenticatedUser->userTeamRoles[0]->role->value !== UserTeamRole::Pending->value) {
                         $sessionDrills = $sessionDrills->where("sessions.user_id", $authenticatedUser->id);
                     }
                 }

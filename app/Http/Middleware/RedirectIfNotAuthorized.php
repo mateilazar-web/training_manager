@@ -44,7 +44,7 @@ class RedirectIfNotAuthorized
                             }
 
                             if (
-                                $authenticatedUser->userTeamRoles[0]->role != UserTeamRole::Owner->value
+                                $authenticatedUser->userTeamRoles[0]->role->value != UserTeamRole::Owner->value
                                 && $authenticatedUser->id != $currentRouteUser->id
                             ) {
                                 abort(403);

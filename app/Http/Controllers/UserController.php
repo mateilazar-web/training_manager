@@ -35,7 +35,7 @@ class UserController extends Controller
                 abort(404, "User has no team roles");
             }
 
-            if ($authenticatedUser->userTeamRoles[0]->role == "Owner") {
+            if ($authenticatedUser->userTeamRoles[0]->role->value === "Owner") {
                 $team = Team::query()->find($authenticatedUser->userTeamRoles[0]->team_id);
 
                 if (!$team instanceof Team) {
@@ -110,7 +110,7 @@ class UserController extends Controller
         if ($authenticatedUser->role->name == "Admin") {
             $canEditUserRole = true;
         } else {
-            if ($authenticatedUser->userTeamRoles[0]->role == UserTeamRole::Owner->value) {
+            if ($authenticatedUser->userTeamRoles[0]->role->value == UserTeamRole::Owner->value) {
                 $canEditUserRole = true;
             }
         }

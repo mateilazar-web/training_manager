@@ -78,8 +78,8 @@ class User extends Authenticatable
             $team = $user->userTeamRoles[0]->team;
             $teamRole = $user->userTeamRoles[0]->role;
             if (
-                $teamRole === UserTeamRole::Owner->value
-                || $teamRole === UserTeamRole::Coach->value
+                $teamRole->value === UserTeamRole::Owner->value
+                || $teamRole->value === UserTeamRole::Coach->value
             ) {
                 return $query->whereHas('userTeamRoles', function ($query) use ($team) {
                     $query->where('team_id', $team->id);

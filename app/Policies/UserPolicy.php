@@ -15,7 +15,8 @@ class UserPolicy
      */
     public function view(User $authUser, User $user)
     {
-        return $authUser->userTeamRoles[0]->role === UserTeamRole::Owner->value || $authUser->id === $user->id;
+        return $authUser->userTeamRoles[0]->role->value === UserTeamRole::Owner->value 
+            || $authUser->id === $user->id;
     }
 
     public function updateField(User $user, User $record, $field)
@@ -27,7 +28,7 @@ class UserPolicy
 
         if (
             count($user->userTeamRoles) > 0
-            && $user->userTeamRoles[0]->role === UserTeamRole::Owner->value
+            && $user->userTeamRoles[0]->role->value === UserTeamRole::Owner->value
         ) {
             $editableFields[] = 'team_role';
         }

@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 
 class SessionDrillsController extends Controller
 {
-    private $searchParameter;
-
     /**
      * Display a listing of the resource.
      *

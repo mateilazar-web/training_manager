@@ -63,7 +63,7 @@ class SessionController extends Controller
 
     public function generate($id)
     {
-        /** @var Session $session */
+        /** @var Session|null $session */
         $session = Session::query()->find($id);
 
         if (!$session) {

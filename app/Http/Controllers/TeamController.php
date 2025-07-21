@@ -185,7 +185,7 @@ class TeamController extends Controller
         $userTeamRole->team_id = $request["team"];
         $userTeamRole->save();
 
-        /** @var Team $team */
+        /** @var Team|null $team */
         $team = Team::query()->find($request["team"]);
 
         if (!$team) {
