@@ -43,4 +43,12 @@ class Tag extends Model
     {
         return $this->hasMany('App\Models\SessionDrill', 'session_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function team()
+    {
+        return $this->belongsTo('App\Models\Team');
+    }
 }

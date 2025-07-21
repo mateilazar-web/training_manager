@@ -34,8 +34,11 @@
             <form action="{{ route('tags.destroy',$tag->id) }}" method="POST">
                 <a class="btn btn-info" href="{{ route('tags.show',$tag->id) }}">Show</a>
 
-                @if (auth()->user()->role == 'Super Admin')
+                @can('update', $tag)
                 <a class="btn btn-primary" href="{{ route('tags.edit',$tag->id) }}">Edit</a>
+                @endcan
+
+                @if (auth()->user()->role == 'Super Admin')                
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger">Delete</button>
